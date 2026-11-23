@@ -1,7 +1,6 @@
 """Módulo con la lógica de traducción entre jerga Gen Z y español estándar."""
 
 from diccionario import JERGA_GENZ
-import re
 
 def traducir_a_boomer(frase: str) -> str:
     """Traduce una frase con términos Gen Z a lenguaje estándar.
@@ -12,10 +11,20 @@ def traducir_a_boomer(frase: str) -> str:
     Returns:
         La frase con los términos conocidos sustituidos.
     """
-    palabras: list[str] = re.split("\b\b\w*\s*", frase)
+    palabras: list[str] = frase.split()
     resultado: list[str] = []
 
     for palabra in palabras:
+        cap = False
+        if palabra[0] == palabra[0].upper():
+            cap = True
+        if palabra.lower() in JERGA_GENZ:
+            res = JERGA_GENZ[palabra]
+            if cap:
+                res = res[0].upper() + res[1:]
+            resultado.append(res)
+        else:
+            resultado.append(palabra)
         if palabra in JERGA_GENZ:
             resultado.append(JERGA_GENZ[palabra])
         else:
